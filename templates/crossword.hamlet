@@ -1,0 +1,13 @@
+<script src="crossword.julius">
+<link href="crossword.lucius" rel="stylesheet"><h1>Crossword
+
+<div #addField>
+    <h3>Add section
+    <ol #wordsList>
+    <input type="text" #questionText>
+    <input type="text" #answerText>
+    <button #addButton>Add
+    <button #createButton>Create crossword
+
+<div #createField>
+    <h3>Created crossword

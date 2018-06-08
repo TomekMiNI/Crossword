@@ -1,0 +1,90 @@
+$(function(){
+    $("#addButton").click(function(){
+        var question = $("#questionText").val();
+        if(question==""){
+            alert("you have to introduce answer!");
+            return;
+        }
+        var answer = $("#answerText").val();
+        if(answer==""){
+            alert("you have to introduce answer!");
+            return;
+        }
+        var element = $("<li>");
+        var questionLabel = $("<label>").text(question + "? ");
+        questionLabel.addClass("questionL");
+        var answerLabel = $("<label>").text(answer);
+        answerLabel.addClass("answerL");
+        element.append(questionLabel);
+        element.append(answerLabel);
+        $("#wordsList").append(element);
+        
+    });
+
+    $("#createButton").click(function(){
+        var keys = [];
+        var values = [];
+        $("#wordsList").children("li").each(function(){
+            keys.push($(this).children(".questionL:first").text());
+            values.push($(this).children(".answerL:first").text());
+        });
+        $.ajax({
+            url: '/createcrossword',
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify({
+                questions: keys,
+                answers: values
+            }),
+            success: function (data) {
+                var table = $("<table>");
+                table.id = "mytable";
+                table.border = 1;
+                var height = data["answers"].length;
+                var width = data["answers"][0].length;
+                alert(data["answers"] + data["positions"]);
+                var i, j, k;
+                for(i=0;i<height;i++)
+                {
+                    var tr = $("<tr>");
+                    for(j=0;j<width;j++)
+                    {
+                        var td = $("<td>");
+                        var newelement;
+                        switch(data["answers"][i].charAt(j)){
+                            case '2':
+                                newelement = $("<label>");
+                                newelement.addClass("questionField");
+                                alert(data["questions"].length);
+                                for(k=0;k<data["questions"].length;k++)
+                                {
+                                    if(data["positions"][k][0] == i && data["positions"][k][1] == j)
+                                    {   
+                                    alert(data["positions"][k][0] + "-" + data["positions"][k][1]);
+                                        newelement.text(data["questions"][k]);
+                                        break;
+                                    }
+                                }
+                                break;
+                            case '0':
+                                newelement = $("<label>");
+                                newelement.addClass("blankField");
+                                break;
+                            default:
+                                newelement = $("<input>");
+                                newelement.type='text';
+                                newelement.addClass("letterField");
+                        }
+                        td.append(newelement);
+                        tr.append(td);
+                    }
+                    table.append(tr);
+                }
+                $("#createField").append(table);
+            },
+            error: function (data) {
+                console.log("Error creating comment: " + data);
+            },
+        });
+    })
+});

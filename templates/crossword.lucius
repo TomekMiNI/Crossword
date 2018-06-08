@@ -1,0 +1,21 @@
+
+#wordsList li{
+    border-bottom: solid;
+}
+
+#addField{
+    width: 50%;
+    float: left;
+}
+
+#createField{
+    width: 50%;
+    float: left;
+}
+
+
+
+table>tr>td>*{
+    width: 100%;
+    height: 100%;
+}
