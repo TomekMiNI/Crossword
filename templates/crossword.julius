@@ -38,11 +38,66 @@ $(function(){
             }),
             success: function (data) {
                 var table = $("<table>");
+                var starty = data["miny"];
+                var startx = data["minx"];
+                var endy = data["maxy"];
+                var endx = data["maxx"];
+                alert(data["set"] + ", " + data["minx"] + ", " + data["maxx"] + ", " + data["miny"] + " ," + data["maxy"]);
+                for(i=startx;i<=endx;i++)
+                {
+                    var tr = $("<tr>");
+                    for(j=starty;j<=endy;j++)
+                    {
+                        var td = $("<td>");
+                        var newelement;
+                        var isInput = false;
+                        var text2;
+                        for(k=0;k<data["set"].length;k++)
+                        {
+                            if(data["set"][k][0][0] == i && (data["set"][k][0][1] == j))
+                            {
+                                isInput = true;
+                                text2 = data["set"][k][1];
+                                break;
+                            }
+                        }
+                        if(isInput && text2 != '1')
+                        {
+                            newelement = $("<input>");
+                            newelement.type='text';
+                            newelement.addClass("letterField");
+                            $(newelement).attr('maxlength',1);
+                            $(newelement).val(text2);
+                        }
+                        else
+                        {
+                            newelement = $("<label>");
+                            newelement.addClass("blankField");
+                        }
+                        td.append(newelement);
+                        tr.append(td);
+                    }
+                    table.append(tr);
+                }
+                $("#createField").append(table);
+            },
+            error: function (data) {
+                console.log("Error creating comment: " + data);
+            },
+        });
+    })
+});
+
+function simple(data){
+    var table = $("<table>");
                 table.id = "mytable";
                 table.border = 1;
                 var height = data["answers"].length;
                 var width = data["answers"][0].length;
-                alert(data["answers"] + data["positions"]);
+                $(table).css("max-height",height*30);
+                $(table).css("height",height*30);
+                $(table).css("width",width*30);
+                $(table).css("max-width",width*30);
                 var i, j, k;
                 for(i=0;i<height;i++)
                 {
@@ -55,12 +110,10 @@ $(function(){
                             case '2':
                                 newelement = $("<label>");
                                 newelement.addClass("questionField");
-                                alert(data["questions"].length);
                                 for(k=0;k<data["questions"].length;k++)
                                 {
                                     if(data["positions"][k][0] == i && data["positions"][k][1] == j)
                                     {   
-                                    alert(data["positions"][k][0] + "-" + data["positions"][k][1]);
                                         newelement.text(data["questions"][k]);
                                         break;
                                     }
@@ -81,10 +134,4 @@ $(function(){
                     table.append(tr);
                 }
                 $("#createField").append(table);
-            },
-            error: function (data) {
-                console.log("Error creating comment: " + data);
-            },
-        });
-    })
-});
+}
