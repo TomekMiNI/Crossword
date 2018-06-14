@@ -71,8 +71,27 @@ $(function(){
                         }
                         else
                         {
+                            var isPos = false;
+                            var text3;
                             newelement = $("<label>");
-                            newelement.addClass("blankField");
+                            for(it=0;it<data["positions"].length;it++)
+                            {
+                                if(data["positions"][it][0]==i && data["positions"][it][1]==j)
+                                {
+                                    isPos=true;
+                                    text3="pytanie nr " + it;
+                                    break;
+                                }
+                            }
+                            if(isPos)
+                            {
+                                $(newelement).text(text3);
+                                newelement.addClass("questionField");
+                            }
+                            else
+                            {
+                                newelement.addClass("blankField");
+                            }
                         }
                         td.append(newelement);
                         tr.append(td);
@@ -82,7 +101,7 @@ $(function(){
                 $("#createField").append(table);
             },
             error: function (data) {
-                console.log("Error creating comment: " + data);
+                alert("Impossible to create crossword!");
             },
         });
     })

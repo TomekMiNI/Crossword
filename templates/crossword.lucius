@@ -1,4 +1,8 @@
 
+.questionField{
+    height: 30px;
+}
+
 #wordsList li{
     border-bottom: solid;
 }
