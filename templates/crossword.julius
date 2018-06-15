@@ -74,12 +74,12 @@ $(function(){
                             var isPos = false;
                             var text3;
                             newelement = $("<label>");
-                            for(it=0;it<data["positions"].length;it++)
+                            for(it=0;it<Object.keys(data["positions"]).length;it++)
                             {
                                 if(data["positions"][it][0]==i && data["positions"][it][1]==j)
                                 {
                                     isPos=true;
-                                    text3="pytanie nr " + it;
+                                    text3=data["questions"][it];
                                     break;
                                 }
                             }
